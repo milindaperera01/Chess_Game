@@ -24,17 +24,14 @@ public class UserService {
 
     public Users LoginOrRegisterUser(String idTokenString){
         try {
-            // 1. Verify the Google token and get the user's data (payload)
+
             GoogleIdToken.Payload payload = googleTokenVerifierService.verifyToken(idTokenString);
 
-            // 2. Get the email from the payload
             String email = payload.getEmail();
-
-            // 3. Check if a user with this email already exists in the database
+            
             Optional<Users> userOptional = usersRepo.findByEmail(email);
 
             if(userOptional.isPresent()){
-                // User exists, return the existing user
                 return userOptional.get();
             } else {
               Users newUser = new Users();
